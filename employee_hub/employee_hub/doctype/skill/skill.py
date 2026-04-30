@@ -9,15 +9,19 @@ from frappe import _
 
 
 class Skill(Document):
+    # Runs on every save. Single hook for Skill business validations.
     def validate(self):
         self.validate_duplicate_skill_name()
 
     def validate_duplicate_skill_name(self):
         """Prevent duplicate skill names (case-insensitive)."""
 
+        # Skip when empty — the schema-level `reqd` flag handles presence.
         if not self.skill_name:
             return
 
+        # Case-insensitive lookup; exclude the current row via `name != %s`
+        # so updates of the same record do not collide with themselves.
         existing = frappe.db.sql("""
             SELECT name
             FROM `tabSkill`

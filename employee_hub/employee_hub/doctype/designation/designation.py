@@ -9,15 +9,20 @@ from frappe import _
 
 
 class Designation(Document):
+    # Runs on every save. Centralises validations for Designation.
     def validate(self):
         self.validate_duplicate_designation_name()
 
     def validate_duplicate_designation_name(self):
         """Prevent duplicate designation names (case-insensitive)."""
 
+        # Nothing to compare against if the field is empty; a `reqd` flag
+        # at the schema level should already enforce presence.
         if not self.designation_name:
             return
 
+        # Case-insensitive duplicate check. `name != %s` excludes the current
+        # row so re-saving an existing record doesn't trigger a false match.
         existing = frappe.db.sql("""
             SELECT name
             FROM `tabDesignation`

@@ -7,12 +7,17 @@ from frappe import _
 
 
 class Department(Document):
+    # Runs on every save (insert + update). Single hook point for all
+    # business validations on Department.
     def validate(self):
         self.validate_duplicate_department_name()
 
     def validate_duplicate_department_name(self):
         """Prevent duplicate department names (case-insensitive)."""
 
+        # Frappe's `unique` flag on a field is case-sensitive at the DB level,
+        # so we run an explicit case-insensitive lookup. The `name != %s`
+        # clause excludes the current record so updates don't match themselves.
         existing = frappe.db.sql("""
             SELECT name
             FROM `tabDepartment`
