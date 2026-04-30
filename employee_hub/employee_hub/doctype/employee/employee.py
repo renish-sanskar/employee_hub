@@ -13,6 +13,12 @@ class Employee(Document):
     def before_save(self):
         self.set_full_name()
 
+    # Runs once when the document is first inserted into the DB.
+    # Used to seed defaults that depend on global configuration so we
+    # don't hard-code values inside the schema.
+    def before_insert(self):
+        self.set_default_leave_balance()
+
     # Runs on every save (insert + update) before `before_save`.
     # Centralises all business-rule validations for the Employee doctype.
     def validate(self):
@@ -34,6 +40,20 @@ class Employee(Document):
         # Join only the non-empty parts to avoid a stray leading/trailing space
         # when one of the names is missing.
         self.full_name = " ".join(part for part in [first, last] if part)
+
+    def set_default_leave_balance(self):
+        """Seed annual_leave_balance from the Leave Configuration single."""
+
+        # Only seed if the user hasn't already set a value on the form.
+        if self.annual_leave_balance:
+            return
+
+        # Use cached single value to avoid a fresh DB read on every insert.
+        default_balance = frappe.db.get_single_value(
+            "Leave Configuration", "default_annual_balance"
+        )
+        if default_balance is not None:
+            self.annual_leave_balance = default_balance
 
     def validate_date_of_birth(self):
         # Skip validation if DOB is not provided; the `reqd` flag on the
