@@ -134,9 +134,9 @@ frappe.ui.form.on("Employee", {
 		});
 	}
 
-	// Field permissions: Only HR Admin can edit employee_email
+	// Field permissions: Only HR Admin and Administrator can edit employee_email
 	,field_permissions(frm) {
-		if (frappe.user.has_role("Employee") && !frappe.user.has_role("HR Admin")) {
+		if (frappe.user.has_role("Employee") && !frappe.user.has_role("HR Admin") && !frappe.user.has_role("Administrator")) {
             if (frm.doc.employee_email !== frappe.session.user) {
                 frm.set_read_only();
             }
