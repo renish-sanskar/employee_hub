@@ -1,0 +1,120 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow",
+  "document_type": "Leave Request",
+  "enable_action_confirmation": 0,
+  "is_active": 1,
+  "modified": "2026-05-01 13:04:04.695370",
+  "name": "Leave Approval Workflow",
+  "override_status": 0,
+  "send_email_alert": 0,
+  "states": [
+   {
+    "allow_edit": "Employee",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "evaluate_as_expression": 0,
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "send_email": 1,
+    "state": "Pending",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "Hr Admin",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "evaluate_as_expression": 0,
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "send_email": 1,
+    "state": "Approved",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "Hr Admin",
+    "avoid_status_override": 0,
+    "doc_status": "0",
+    "evaluate_as_expression": 0,
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "send_email": 1,
+    "state": "Rejected",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "Hr Admin",
+    "avoid_status_override": 0,
+    "doc_status": "2",
+    "evaluate_as_expression": 0,
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "send_email": 1,
+    "state": "Cancelled",
+    "update_field": null,
+    "update_value": null,
+    "workflow_builder_id": null
+   }
+  ],
+  "transitions": [
+   {
+    "action": "Approve",
+    "allow_self_approval": 1,
+    "allowed": "Hr Admin",
+    "condition": null,
+    "next_state": "Approved",
+    "send_email_to_creator": 0,
+    "state": "Pending",
+    "transition_tasks": null,
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Reject",
+    "allow_self_approval": 1,
+    "allowed": "Hr Admin",
+    "condition": null,
+    "next_state": "Rejected",
+    "send_email_to_creator": 0,
+    "state": "Pending",
+    "transition_tasks": null,
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Reject",
+    "allow_self_approval": 1,
+    "allowed": "Hr Admin",
+    "condition": null,
+    "next_state": "Cancelled",
+    "send_email_to_creator": 0,
+    "state": "Approved",
+    "transition_tasks": null,
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Cancell",
+    "allow_self_approval": 1,
+    "allowed": "Employee",
+    "condition": null,
+    "next_state": "Rejected",
+    "send_email_to_creator": 0,
+    "state": "Pending",
+    "transition_tasks": null,
+    "workflow_builder_id": null
+   }
+  ],
+  "workflow_data": null,
+  "workflow_name": "Leave Approval Workflow",
+  "workflow_state_field": "approval_status"
+ }
+]
