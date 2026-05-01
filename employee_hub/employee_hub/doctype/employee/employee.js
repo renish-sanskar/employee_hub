@@ -8,6 +8,7 @@ frappe.ui.form.on("Employee", {
 		frm.trigger("set_dashboard_indicator");
 		frm.trigger("add_leave_request_button");
 		frm.trigger("add_skills_summary_button");
+		frm.trigger("field_permissions");
 	},
 
 	// Clear designation when department changes
@@ -131,5 +132,14 @@ frappe.ui.form.on("Employee", {
 
 			dialog.show();
 		});
+	}
+
+	// Field permissions: Only HR Admin can edit employee_email
+	,field_permissions(frm) {
+		if (frappe.user.has_role("Employee") && !frappe.user.has_role("HR Admin")) {
+            if (frm.doc.employee_email !== frappe.session.user) {
+                frm.set_read_only();
+            }
+        }
 	}
 });

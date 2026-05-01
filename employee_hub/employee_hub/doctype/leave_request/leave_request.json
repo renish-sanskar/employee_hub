@@ -14,6 +14,7 @@
   "total_days",
   "approved_by",
   "approval_date",
+  "employee_email",
   "column_break_bwkd",
   "from_date",
   "to_date",
@@ -128,13 +129,21 @@
   {
    "fieldname": "section_break_lznm",
    "fieldtype": "Section Break"
+  },
+  {
+   "fetch_from": "employee.employee_email",
+   "fieldname": "employee_email",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Employee Email",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-30 17:19:59.922837",
+ "modified": "2026-05-01 14:41:25.702279",
  "modified_by": "Administrator",
  "module": "Employee Hub",
  "name": "Leave Request",

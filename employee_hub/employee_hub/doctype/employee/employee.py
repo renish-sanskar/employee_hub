@@ -28,6 +28,7 @@ class Employee(Document):
         self.validate_date_of_joining()
         self.validate_employee_email()
         self.validate_joining_after_birth()
+        self.validate_to_edit_details()
 
     def set_full_name(self):
         """Auto-generate full name from first_name + last_name."""
@@ -102,3 +103,8 @@ class Employee(Document):
         # Sanity check: an employee cannot join on or before they were born.
         if getdate(self.date_of_joining) <= getdate(self.date_of_birth):
             frappe.throw(_("Date of Joining must be after Date of Birth."))
+            
+    def validate_to_edit_details(self):
+        if "Employee" in frappe.get_roles() and "HR Admin" not in frappe.get_roles():
+            if self.employee_email != frappe.session.user:
+                frappe.throw("You can only edit your own Employee record.")

@@ -54,6 +54,7 @@
    "fieldtype": "Data",
    "label": "Employee Email",
    "options": "Email",
+   "permlevel": 1,
    "reqd": 1,
    "unique": 1
   },
@@ -74,6 +75,7 @@
    "fieldtype": "Date",
    "in_list_view": 1,
    "label": "Date of Joining",
+   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -82,6 +84,7 @@
    "in_list_view": 1,
    "label": "Department",
    "options": "Department",
+   "permlevel": 1,
    "reqd": 1
   },
   {
@@ -90,13 +93,15 @@
    "in_list_view": 1,
    "label": "Designation",
    "options": "Designation",
+   "permlevel": 1,
    "reqd": 1
   },
   {
    "fieldname": "reporting_manager",
    "fieldtype": "Link",
    "label": "Reporting Manager",
-   "options": "Employee"
+   "options": "Employee",
+   "permlevel": 1
   },
   {
    "default": "Active",
@@ -105,6 +110,7 @@
    "in_list_view": 1,
    "label": "Employee Status",
    "options": "Active\nInactive\nOn Leave\nTerminated",
+   "permlevel": 1,
    "read_only": 1
   },
   {
@@ -142,7 +148,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-30 16:44:12.260556",
+ "modified": "2026-05-01 11:59:55.707963",
  "modified_by": "Administrator",
  "module": "Employee Hub",
  "name": "Employee",

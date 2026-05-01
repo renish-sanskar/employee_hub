@@ -4,6 +4,42 @@
 frappe.ui.form.on("Leave Request", {
 	refresh(frm) {
 		frm.trigger("show_leave_balance");
+		frm.trigger("prefill_and_lock_employee");
+	},
+
+	// Pre-fill `employee` with the Employee record linked to the logged-in user.
+	// Non-HR Managers cannot change it -> they can only file leave for themselves.
+	prefill_and_lock_employee(frm) {
+		const is_hr_manager = frappe.user.has_role("HR Manager");
+
+		// HR Manager / Administrator can pick any employee.
+		if (is_hr_manager) {
+			frm.set_df_property("employee", "read_only", 0);
+			return;
+		}
+
+		// For new docs without an employee, look up the Employee by email
+		// of the currently logged-in user and set it.
+		if (frm.is_new() && !frm.doc.employee) {
+			frappe.db.get_value(
+				"Employee",
+				{ employee_email: frappe.session.user },
+				"name"
+			).then(r => {
+				const employee = r.message && r.message.name;
+				if (employee) {
+					frm.set_value("employee", employee);
+				} else {
+					frappe.show_alert({
+						message: __("No Employee record is linked to your user ({0}).", [frappe.session.user]),
+						indicator: "red"
+					}, 7);
+				}
+			});
+		}
+
+		// Lock the field so the user cannot switch to another employee.
+		frm.set_df_property("employee", "read_only", 1);
 	},
 
 	// Show remaining leave balance as a form intro when employee changes
@@ -12,8 +48,11 @@ frappe.ui.form.on("Leave Request", {
 			frm.set_intro("");
 			return;
 		}
+
+
 		frm.trigger("show_leave_balance");
 	},
+
 
 	show_leave_balance(frm) {
 		if (!frm.doc.employee) return;
